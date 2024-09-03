@@ -123,3 +123,61 @@ for continant in continant_list:
         p2 += 1
 
 conn.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import psycopg2
+import math
+
+# Connect to the PostgreSQL database
+conn = psycopg2.connect(
+    dbname="your_dbname",
+    user="your_username",
+    password="your_password",
+    host="your_host",
+    port="your_port"
+)
+cursor = conn.cursor()
+
+# Step 1: Count the total number of rows
+cursor.execute("SELECT COUNT(*) FROM your_table")
+total_rows = cursor.fetchone()[0]
+
+# Step 2: Calculate the number of rows per part
+rows_per_part = math.ceil(total_rows / 5)
+
+# Step 3: Fetch and process each part
+for i in range(5):
+    cursor.execute("SELECT * FROM your_table LIMIT %s OFFSET %s", (rows_per_part, i * rows_per_part))
+    rows = cursor.fetchall()
+    
+    # Do something with the rows
+    print(f"Part {i+1}:")
+    for row in rows:
+        print(row)
+
+# Close the connection
+conn.close()
+
+
+
